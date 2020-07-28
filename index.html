@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="hide" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="generate-input" class="form-control" type="text">
+                    <button onclick="randomNumber()" id="generate-btnId" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="input-number" class="form-control" type="text" placeholder="0">
+                    <div class="numbers">
+                        <div id="calc-body-part" class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert('7')">7</div>
+                              <div class="button" onclick="insert('8')">8</div>
+                              <div class="button" onclick="insert('9')">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert('4')">4</div>
+                              <div class="button" onclick="insert('5')">5</div>
+                              <div class="button" onclick="insert('6')">6</div>
+                            </div>              
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert('1')">1</div>
+                              <div class="button" onclick="insert('2')">2</div>
+                              <div class="button" onclick="insert('3')">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" onclick="deleteBtn()"><</div>
+                                <div class="button" onclick="insert('0')">0</div>
+                                <div onclick="cBtn()" class="button" id="clear-btn">C</div>
+                            </div>
+                            <div>
+                                <button onclick="include()" id="submit-btn" type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="a" class="notify-section" style="display: none;">
+            <p id="not-match" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="yes-match" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+        <div class="result">
+            <p id="showResult"></p>
+            <h6 id="totalRandomNumber"></h6>
+        </div>
+    </div>
+    <script>
+         //random number
+        function randomNumber(){
+        //    var random = Math.floor(1000+ Math.random() * 900);
+            var random = Math.floor(1000 + Math.random() * 9999);
+            random =random.toString().substring(0, 4);
+           document.getElementById('generate-input').value =random;
+        }
+        // insert value and onclick
+        function insert(num){
+        document.getElementById("input-number").value += num;
+        }
+        //delete one by one the input-number
+        function deleteBtn(){
+            var output = document.getElementById('input-number').value;
+            if(output){
+                output = output.substr(0,output.length-1);
+                document.getElementById('input-number').value =output;
+            }
+        }
+        //clearBtn
+        function cBtn(){
+            document.getElementById('input-number').value="";
+        }
+        //calculate same or not same
+        function include(){
+            var randomNumber = document.getElementById('generate-input').value;
+            var inputNumber=document.getElementById('input-number').value;
+            if(randomNumber == inputNumber){
+                matchShowResult('yes-match','showResult','totalRandomNumber',randomNumber);
+                // document.getElementById('totalRandomNumber').innerText ='Welcome...This is random number : ' +randomNumber;
+            }else{
+                matchShowResult('not-match','showResult','totalRandomNumber',inputNumber);
+                // document.getElementById('totalRandomNumber').innerText ='Sorry...This is random wrong number : ' +inputNumber;
+            }
+        }
+        //match result
+        function matchShowResult(id,showResult,randomId,number){
+               const match= document.getElementById(id);
+               match.style.display = "block";
+               var matchInnerValue=match.innerText;
+               document.getElementById(showResult).innerText = matchInnerValue;
+               document.getElementById(randomId).innerText ='This is random number : ' +number;
+        }
+    </script>
+</body>
+</html>
